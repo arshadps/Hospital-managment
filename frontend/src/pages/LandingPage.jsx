@@ -1,17 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
 const LandingPage = () => {
   return (
     <div className="landing-page" style={{ position: 'relative', paddingBottom: '80px', minHeight: '100vh' }}>
-      <nav className="landing-nav">
-        <h1 className="logo">MediCore<span style={{color: 'var(--success)'}}>.</span></h1>
-        <div className="nav-links" style={{display: 'flex', gap: '15px'}}>
-          <Link to="/login" className="btn btn-outline" style={{padding: '8px 20px'}}>Sign In</Link>
-          <Link to="/register" className="btn btn-primary" style={{padding: '8px 20px', boxShadow: '0 4px 15px rgba(0, 123, 255, 0.4)'}}>Join Network</Link>
-        </div>
-      </nav>
+      <Navbar />
       
       <main className="hero-section">
         <div className="hero-content">

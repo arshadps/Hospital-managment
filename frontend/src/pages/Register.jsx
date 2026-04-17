@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
 const Register = () => {
   return (
-    <div className="container" style={{display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', position: 'relative', paddingBottom: '80px'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative', paddingBottom: '80px' }}>
+      <Navbar />
+      <div className="container" style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <div className="card" style={{width: '450px', textAlign: 'center', padding: '40px'}}>
         <h2 style={{color: 'var(--dark)', marginBottom: '30px'}}>Choose Your Role</h2>
         <p style={{color: 'var(--secondary)', marginBottom: '30px'}}>Are you seeking medical attention or looking to join our professional network?</p>
@@ -15,6 +18,7 @@ const Register = () => {
         <div style={{marginTop: '30px', borderTop: '1px solid #eee', paddingTop: '20px'}}>
             <Link to="/login" style={{color: 'var(--primary)', fontWeight: '600'}}>Already registered? Sign In</Link>
         </div>
+      </div>
       </div>
       <div style={{position: 'absolute', bottom: 0, width: '100%'}}><Footer /></div>
     </div>

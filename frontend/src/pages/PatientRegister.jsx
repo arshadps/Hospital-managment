@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
 const PatientRegister = () => {
   const [formData, setFormData] = useState({email: '', username: '', first_name: '', last_name: '', address: '', gender: '', age: '', phone_number: ''});
@@ -15,7 +16,11 @@ const PatientRegister = () => {
       }
       if (name === 'email') {
           const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          if (value.length > 0 && !re.test(value)) error = 'Invalid email format';
+          if (value.length > 0 && !re.test(value)) {
+              error = 'Invalid email format';
+          } else if (value.length > 0 && !value.endsWith('@gmail.com')) {
+              error = 'Only @gmail.com addresses are allowed';
+          }
       }
       if (name === 'phone_number') {
           const re = /^\d{10}$/;
@@ -54,7 +59,9 @@ const PatientRegister = () => {
   };
 
   return (
-    <div className="container" style={{display: 'flex', minHeight: '100vh', alignItems: 'center', justifyContent: 'center', padding: '40px 0 100px 0', position: 'relative'}}>
+    <div style={{display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative', paddingBottom: '80px'}}>
+      <Navbar />
+      <div className="container" style={{display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center', padding: '40px 0'}}>
       <div className="card" style={{width: '600px'}}>
         <h2 style={{marginBottom: '5px', color: 'var(--primary)', textAlign: 'center'}}>Patient Registration</h2>
         <p style={{textAlign: 'center', color: 'var(--secondary)', marginBottom: '20px'}}>Create your patient profile to book appointments</p>
@@ -102,6 +109,7 @@ const PatientRegister = () => {
         <div style={{marginTop: '20px', textAlign: 'center', borderTop: '1px solid #eee', paddingTop: '15px'}}>
             <Link to="/register" style={{color: 'var(--text-muted)'}}>Back to roles</Link>
         </div>
+      </div>
       </div>
       <div style={{position: 'absolute', bottom: 0, width: '100%'}}><Footer /></div>
     </div>

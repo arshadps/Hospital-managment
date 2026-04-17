@@ -2,9 +2,16 @@ import React, { useEffect, useState, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const PatientDashboard = () => {
     const { user, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
     const [activeTab, setActiveTab] = useState('book');
     const [departments, setDepartments] = useState([]);
     const [doctors, setDoctors] = useState([]);
@@ -46,6 +53,10 @@ const PatientDashboard = () => {
 
     const updateProfile = async (e) => {
         e.preventDefault();
+        if (profile?.email && !profile.email.endsWith('@gmail.com')) {
+            setProfileMsg({text: 'Only @gmail.com addresses are allowed.', type: 'danger'});
+            return;
+        }
         try {
             await api.put('auth/profile/', profile);
             setProfileMsg({text: 'Profile updated successfully!', type: 'success'});
@@ -100,10 +111,8 @@ const PatientDashboard = () => {
 
          try {
              await api.post('auth/change-password/', { old_password: oldPassword, new_password: newPassword });
-             setPwdMsg({text: 'Password successfully updated!', type: 'success'});
-             setOldPassword('');
-             setNewPassword('');
-             setConfirmPassword('');
+             logout();
+             navigate('/login', { state: { message: 'Password successfully updated! Please login again.', msgType: 'success' } });
          } catch(err) {
              setPwdMsg({text: err.response?.data?.error || 'Failed to update password.', type: 'danger'});
          }
@@ -136,7 +145,7 @@ const PatientDashboard = () => {
                 </ul>
                 <div style={{borderTop: '1px solid #34495e', paddingTop: '15px', marginTop: 'auto'}}>
                      <div style={{marginBottom: '15px', fontSize: '14px', color: '#bdc3c7', textAlign: 'center'}}>Logged in as:<br/><strong style={{color: '#fff'}}>{user?.name}</strong></div>
-                <button className="btn mobile-logout" onClick={logout} style={{width: '100%', padding: '12px', backgroundColor: '#e74c3c', color: 'white', fontWeight: 'bold'}}>Logout</button>
+                <button className="btn mobile-logout" onClick={handleLogout} style={{width: '100%', padding: '12px', backgroundColor: '#e74c3c', color: 'white', fontWeight: 'bold'}}>Logout</button>
             </div>
             </div>
 

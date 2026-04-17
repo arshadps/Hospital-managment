@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -27,7 +28,9 @@ const Login = () => {
   };
 
   return (
-    <div className="container" style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center', position: 'relative', paddingBottom: '80px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative', paddingBottom: '80px' }}>
+      <Navbar />
+      <div className="container" style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <div className="card" style={{width: '400px', padding: '40px', boxShadow: '0 10px 30px rgba(0,0,0,0.08)'}}>
         <h2 style={{textAlign: 'center', marginBottom: '25px', color: '#333'}}>System Portal Access</h2>
         
@@ -51,6 +54,7 @@ const Login = () => {
           <Link to="/reset-password" style={{ color: 'var(--secondary)' }}>Forgot Password?</Link>
           <Link to="/register" style={{ fontWeight: '600' }}>Create Account</Link>
         </div>
+      </div>
       </div>
       <div style={{position: 'absolute', bottom: 0, width: '100%'}}>
         <Footer />

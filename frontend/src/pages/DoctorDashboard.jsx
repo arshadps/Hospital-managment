@@ -2,9 +2,16 @@ import React, { useEffect, useState, useContext } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorDashboard = () => {
     const { user, logout } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
     const [activeTab, setActiveTab] = useState('overview');
     const [appointments, setAppointments] = useState([]);
     const [pwdData, setPwdData] = useState({ old_password: '', new_password: '', confirm_password: '' });
@@ -36,6 +43,10 @@ const DoctorDashboard = () => {
 
     const updateProfile = async (e) => {
         e.preventDefault();
+        if (profile?.email && !profile.email.endsWith('@gmail.com')) {
+            setProfileMsg({text: 'Only @gmail.com addresses are allowed.', type: 'danger'});
+            return;
+        }
         try {
             await api.put('auth/profile/', profile);
             setProfileMsg({ text: 'Profile updated successfully!', type: 'success' });
@@ -78,8 +89,8 @@ const DoctorDashboard = () => {
                 old_password: pwdData.old_password,
                 new_password: pwdData.new_password
             });
-            setPwdMsg({ text: 'Password updated successfully!', type: 'success' });
-            setPwdData({ old_password: '', new_password: '', confirm_password: '' });
+            logout();
+            navigate('/login', { state: { message: 'Password updated successfully! Please login again.', msgType: 'success' } });
         } catch (err) {
             let msg = 'Failed to reset password.';
             if (err.response?.data?.error) msg = err.response.data.error;
@@ -123,7 +134,7 @@ const DoctorDashboard = () => {
                         </li>
                     ))}
                 </ul>
-                <button className="btn mobile-logout" onClick={logout} style={{ width: '100%', padding: '12px', backgroundColor: '#e74c3c', color: 'white', fontWeight: 'bold' }}>Logout</button>
+                <button className="btn mobile-logout" onClick={handleLogout} style={{ width: '100%', padding: '12px', backgroundColor: '#e74c3c', color: 'white', fontWeight: 'bold' }}>Logout</button>
             </div>
 
             <div className="dashboard-content" style={{ flex: 1, padding: '40px 40px 100px 40px', overflowY: 'auto', position: 'relative' }}>

@@ -16,6 +16,10 @@ const ResetPassword = () => {
 
   const handleRequestOTP = async (e) => {
     e.preventDefault();
+    if (!email.endsWith('@gmail.com')) {
+        setErr('Only @gmail.com addresses are allowed.');
+        return;
+    }
     try {
       await api.post('auth/password-reset/', { email });
       setStep(2);
@@ -60,8 +64,7 @@ const ResetPassword = () => {
     
     try {
       await api.post('auth/password-reset-confirm/', { email, code, new_password: newPassword });
-      setMsg('Password reset successful! Redirecting...');
-      setTimeout(() => navigate('/login'), 2000);
+      navigate('/login', { state: { message: 'Password reset successful! Please login.', msgType: 'success' } });
     } catch (e) {
       setErr(e.response?.data?.error || 'Invalid OTP or password strength failed.');
     }
